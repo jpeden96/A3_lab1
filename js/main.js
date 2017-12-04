@@ -1,24 +1,40 @@
 (function () {
   // start with retrieving the elements from the page, and then adding event handling. then write the logic. refer to the seasons example / homework
+  const httpRequest = new XMLHttpRequest();
+
+  var carImg = document.querySelectorAll('.data-ref');
 
 
-  var carImg = document.querySelectorAll('.data-ref'),
-      theModel = document.querySelector('.modelName'),
-      thePrice = document.querySelector('.priceInfo'),
-      theDesc = document.querySelector('.modelDetails');
+    function changeText () {
+      //make an AJAX called to the DB; handle errors first
+      if (!httpRequest) {
+        alert('giving up...');
+        return false;
+      }
 
-      function changeText () {
-        let textIndex = carData[this.id];
+      httpRequest.onreadystatechange = processRequest;
+      httpRequest.open('GET', './includes/functions.php?carModel=' + this.id);
+      httpRequest.send();
+    }
 
-        theModel.firstChild.nodeValue = textIndex.model;
-        thePrice.firstChild.nodeValue = textIndex.price;
-        theDesc.firstChild.nodeValue = textIndex.description;
+      function processResult(data) {
+        const { modelName, pricing, modelDetails } = data;
+
+        //let textIndex = carData[this.id];
+
+          let theModel = document.querySelector('.modelName').textContent = modelName;
+          let thePrice = document.querySelector('.priceInfo').innerHTML = pricing;
+          let theDesc = document.querySelector('.modelDetails').textContent = modelDetails;
+
+        //theModel.firstChild.nodeValue = textIndex.model;
+        //thePrice.firstChild.nodeValue = textIndex.price;
+        //theDesc.firstChild.nodeValue = textIndex.description;
 
         carImg.forEach(function(image, index){
           image.classList.add("nonActive");
         });
 
-        this.classList.remove("nonActive");
+        document.querySelector(`#${data.model}`).classList.remove("nonActive");
       }
 
         carImg.forEach(function(image, index){
@@ -26,6 +42,23 @@
         });
 
 
+//inserted from GIT
+        function processRequest() {
+    let reqIndicator = document.querySelector('.request-state');
+    reqIndicator.textContent = httpRequest.readyState;
+    debugger;
+
+    if (httpRequest.readyState === XMLHttpRequest.DONE) {
+      if (httpRequest.status === 200) { // 200 means everything is awesome
+        debugger;
+        let data = JSON.parse(httpRequest.responseText);
+
+        processResult(data);
+      } else {
+        alert('There was a problem with the request.');
+      }
+    }
+}
 
 
 })();
