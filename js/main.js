@@ -11,7 +11,18 @@
       //the fetch API uses new Javascript promise API
       fetch(url) //do an ajax call with fetch
       .then((resp) => resp.json()) //will take response - and convert to JSON
-      .then((data) => { processResult(data); }) //call the process function
+      .then(({ modelName, pricing, modelDetails, model }) => { //add model
+        let theModel = document.querySelector('.modelName').textContent = modelName;
+        let thePrice = document.querySelector('.priceInfo').innerHTML = pricing;
+        let theDesc = document.querySelector('.modelDetails').textContent = modelDetails;
+
+
+      carImg.forEach(function(image, index){
+        image.classList.add("nonActive");
+      });
+
+      document.querySelector(`#${model}`).classList.remove("nonActive"); //have to change data.model -
+    })
       .catch(function(error) {
         //catch any error and report it to the console
         console.log(error);
@@ -33,26 +44,22 @@
         const { modelName, pricing, modelDetails } = data;
 
         //let textIndex = carData[this.id];
-
+/*
           let theModel = document.querySelector('.modelName').textContent = modelName;
           let thePrice = document.querySelector('.priceInfo').innerHTML = pricing;
           let theDesc = document.querySelector('.modelDetails').textContent = modelDetails;
 
-        //theModel.firstChild.nodeValue = textIndex.model;
-        //thePrice.firstChild.nodeValue = textIndex.price;
-        //theDesc.firstChild.nodeValue = textIndex.description;
 
         carImg.forEach(function(image, index){
           image.classList.add("nonActive");
         });
 
         document.querySelector(`#${data.model}`).classList.remove("nonActive");
+        */
       }
-
         carImg.forEach(function(image, index){
           image.addEventListener('click', changeText, false);
         });
-
 
 //inserted from GIT
       /*  function processRequest() {
