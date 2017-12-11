@@ -1,20 +1,32 @@
 (function () {
   // start with retrieving the elements from the page, and then adding event handling. then write the logic. refer to the seasons example / homework
-  const httpRequest = new XMLHttpRequest();
+  //const httpRequest = new XMLHttpRequest();
 
   var carImg = document.querySelectorAll('.data-ref');
 
 
     function changeText () {
+      const url = './includes/functions.php?carModel=' + this.id;
+
+      //the fetch API uses new Javascript promise API
+      fetch(url) //do an ajax call with fetch
+      .then((resp) => resp.json()) //will take response - and convert to JSON
+      .then((data) => { processResult(data); }) //call the process function
+      .catch(function(error) {
+        //catch any error and report it to the console
+        console.log(error);
+      });
+
+
       //make an AJAX called to the DB; handle errors first
-      if (!httpRequest) {
+      /*if (!httpRequest) {
         alert('giving up...');
         return false;
       }
 
       httpRequest.onreadystatechange = processRequest;
       httpRequest.open('GET', './includes/functions.php?carModel=' + this.id);
-      httpRequest.send();
+      httpRequest.send(); */
     }
 
       function processResult(data) {
@@ -43,14 +55,14 @@
 
 
 //inserted from GIT
-        function processRequest() {
+      /*  function processRequest() {
     let reqIndicator = document.querySelector('.request-state');
     reqIndicator.textContent = httpRequest.readyState;
-    debugger;
+    //debugger;
 
     if (httpRequest.readyState === XMLHttpRequest.DONE) {
       if (httpRequest.status === 200) { // 200 means everything is awesome
-        debugger;
+      //  debugger;
         let data = JSON.parse(httpRequest.responseText);
 
         processResult(data);
@@ -58,7 +70,7 @@
         alert('There was a problem with the request.');
       }
     }
-}
+} */
 
 
 })();
