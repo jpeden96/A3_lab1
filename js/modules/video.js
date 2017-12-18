@@ -41,9 +41,30 @@ var video = {
   },
 
   loadVideoThumbs(data) {
-    debugger;
+    //debugger
+    let thumbHolder = document.querySelector('.video-thumbs');
 
-    //add video thumbnails here
+    data.forEach(thumb => {
+      let docFrag = `<li class="vid-thumb" role="button" data-videopath="${thumb.path}">
+        <img src="images/${thumb.placeholder}" alt="mini commercial" class="responsive"></li>`; //copying from HTML index file but changing the source and data-videopath
+
+      thumbHolder.innerHTML += docFrag; //reference unordered list on the page and slap in the name
+    });
+
+    thumbHolder.querySelectorAll('li').forEach((thumb) => thumb.addEventListener('click', video.loadNewVideo)); //on clicking each new thumb, will load a new video
+  },
+
+  loadNewVideo() {
+    let videoPath = "video/" + this.dataset.videopath;
+
+    video.videoPlayer.src = videoPath; //custom data attribute - videopath
+    video.videoPlayer.load();
+    video.videoPlayer.play();
+
+    let overlay = document.querySelector('vid-overlay'); //whenever you load a new video, that will get rid of overlay
+    overlay.clasList.remove('show-overlay');
+
+    video.volOn();
   },
 
   init() {
